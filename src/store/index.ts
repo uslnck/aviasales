@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import checkboxesReducer from "./checkboxesSlice";
+import filtersReducer from "./filtersSlice";
 
 const store = configureStore({
   reducer: {
     checkboxes: checkboxesReducer,
+    filters: filtersReducer,
   },
 });
 

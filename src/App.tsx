@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store";
+import classNames from "classnames";
+
 import {
   toggleAllTransfers,
   toggleZeroTransfers,
@@ -8,26 +9,24 @@ import {
   toggleTwoTransfers,
   toggleThreeTransfers,
 } from "./store/checkboxesSlice";
-import { RootState } from "./store";
+import { setCheapest, setFastest, setOptimal } from "./store/filtersSlice";
 
 function Aviasales() {
-  const [isPressed, setIsPressed] = useState(false);
+  const {
+    allTransfersChecked: checkboxAll,
+    zeroTransfersChecked: checkboxZero,
+    oneTransferChecked: checkboxOne,
+    twoTransfersChecked: checkboxTwo,
+    threeTransfersChecked: checkboxThree,
+  } = useSelector((state: RootState) => state.checkboxes);
 
-  const checkboxAll = useSelector(
-    (state: RootState) => state.checkboxes.allTransfersChecked
+  const { cheapestFilter, fastestFilter, optimalFilter } = useSelector(
+    (state: RootState) => state.filters
   );
-  const checkboxZero = useSelector(
-    (state: RootState) => state.checkboxes.zeroTransfersChecked
-  );
-  const checkboxOne = useSelector(
-    (state: RootState) => state.checkboxes.oneTransferChecked
-  );
-  const checkboxTwo = useSelector(
-    (state: RootState) => state.checkboxes.twoTransfersChecked
-  );
-  const checkboxThree = useSelector(
-    (state: RootState) => state.checkboxes.threeTransfersChecked
-  );
+
+  const btnClass = classNames("filter", {
+    active: cheapestFilter || fastestFilter || optimalFilter, ////////////
+  });
 
   const dispatch = useDispatch();
 
@@ -36,59 +35,47 @@ function Aviasales() {
   };
 
   const handleToggleZero = () => {
-    const allChecked =
+    const isCheckAll =
       !checkboxZero && checkboxOne && checkboxTwo && checkboxThree;
-    dispatch(toggleZeroTransfers({ all: allChecked }));
+    dispatch(toggleZeroTransfers({ all: isCheckAll }));
   };
 
   const handleToggleOne = () => {
-    const allChecked =
+    const isCheckAll =
       checkboxZero && !checkboxOne && checkboxTwo && checkboxThree;
-    dispatch(toggleOneTransfer({ all: allChecked }));
+    dispatch(toggleOneTransfer({ all: isCheckAll }));
   };
 
   const handleToggleTwo = () => {
-    const allChecked =
+    const isCheckAll =
       checkboxZero && checkboxOne && !checkboxTwo && checkboxThree;
-    dispatch(toggleTwoTransfers({ all: allChecked }));
+    dispatch(toggleTwoTransfers({ all: isCheckAll }));
   };
 
   const handleToggleThree = () => {
-    const allChecked =
+    const isCheckAll =
       checkboxZero && checkboxOne && checkboxTwo && !checkboxThree;
-    dispatch(toggleThreeTransfers({ all: allChecked }));
+    dispatch(toggleThreeTransfers({ all: isCheckAll }));
   };
 
   const handleCheapestPress = () => {
+    dispatch(setCheapest());
     console.log("Cheapest pressed");
   };
 
   const handleFastestPress = () => {
+    dispatch(setFastest());
     console.log("Fastest pressed");
   };
 
   const handleOptimalPress = () => {
+    dispatch(setOptimal());
     console.log("Optimal pressed");
   };
 
   const handleShowMorePress = () => {
     console.log("Show more pressed");
   };
-
-  useEffect(() => {
-    setIsPressed(true);
-  }, []);
-
-  const btnClass = classNames("btn", {
-    "btn-active": isPressed,
-  });
-
-  // const handleCheckboxToggle = (id: string) => {
-  //   setCheckboxes((prevCheckboxes) => ({
-  //     ...prevCheckboxes,
-  //     [id]: !prevCheckboxes[id],
-  //   }));
-  // };
 
   return (
     <>
@@ -100,7 +87,7 @@ function Aviasales() {
       </header>
       <main>
         <div className="main-container">
-          <nav className="transfers">
+          <div className="transfers">
             <h2 className="header">КОЛИЧЕСТВО ПЕРЕСАДОК</h2>
             <ul className="options">
               <li className="option" onClick={handleToggleAll}>
@@ -164,14 +151,14 @@ function Aviasales() {
                 </label>
               </li>
             </ul>
-          </nav>
+          </div>
           <div className="tickets-container">
-            <nav className="costs">
-              <ul className="options">
+            <div className="costs">
+              <ul className="filters">
                 <li>
                   <button
                     onClick={handleCheapestPress}
-                    className={`option ${btnClass}`}
+                    className={`${btnClass}`}
                   >
                     САМЫЙ ДЕШЕВЫЙ
                   </button>
@@ -179,7 +166,7 @@ function Aviasales() {
                 <li>
                   <button
                     onClick={handleFastestPress}
-                    className={`option ${btnClass}`}
+                    className={`${btnClass}`}
                   >
                     САМЫЙ БЫСТРЫЙ
                   </button>
@@ -187,13 +174,13 @@ function Aviasales() {
                 <li>
                   <button
                     onClick={handleOptimalPress}
-                    className={`option ${btnClass}`}
+                    className={`${btnClass}`}
                   >
                     ОПТИМАЛЬНЫЙ
                   </button>
                 </li>
               </ul>
-            </nav>
+            </div>
             <div className="ticket">
               <div className="price-company-container">
                 <span className="price">13 400 Р</span>

@@ -11,6 +11,10 @@ $grayed-color: #a0b0b9;
 $checkbox-border: 1px solid #9abbce;
 $transfer-hover-color: #f1fcff;
 
+.active {
+  background-color: red;
+}
+
 html {
   box-sizing: border-box;
 }
@@ -184,7 +188,7 @@ main {
         border-radius: $border-radius;
         background-color: white;
         overflow: hidden;
-        .options {
+        .filters {
           width: 100%;
           height: 100%;
           display: flex;
@@ -198,16 +202,16 @@ main {
             &:last-child {
               border-right: none;
             }
-            &:hover {
-              color: white;
-              background-color: $primary-color;
-            }
-            .option {
+            .filter {
               width: 100%;
               font-weight: 600;
               font-size: 12px;
               line-height: 20px;
               letter-spacing: 0.5px;
+              &:hover {
+                color: white;
+                background-color: $primary-color;
+              }
             }
           }
         }

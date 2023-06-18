@@ -14,19 +14,12 @@ const checkboxesSlice = createSlice({
   initialState,
   reducers: {
     toggleAllTransfers: (state) => {
-      if (!state.allTransfersChecked) {
-        state.allTransfersChecked = true;
-        state.zeroTransfersChecked = true;
-        state.oneTransferChecked = true;
-        state.twoTransfersChecked = true;
-        state.threeTransfersChecked = true;
-      } else if (state.allTransfersChecked) {
-        state.allTransfersChecked = false;
-        state.zeroTransfersChecked = false;
-        state.oneTransferChecked = false;
-        state.twoTransfersChecked = false;
-        state.threeTransfersChecked = false;
-      }
+      const allTransfersStatus = !state.allTransfersChecked;
+      state.allTransfersChecked = allTransfersStatus;
+      state.zeroTransfersChecked = allTransfersStatus;
+      state.oneTransferChecked = allTransfersStatus;
+      state.twoTransfersChecked = allTransfersStatus;
+      state.threeTransfersChecked = allTransfersStatus;
     },
     toggleZeroTransfers: (state, action) => {
       state.zeroTransfersChecked = !state.zeroTransfersChecked;
