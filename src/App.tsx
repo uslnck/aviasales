@@ -1,33 +1,66 @@
 import { useEffect, useState } from "react";
 import classNames from "classnames";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  toggleAllTransfers,
+  toggleOneTransfer,
+  toggleTwoTransfers,
+  toggleThreeTransfers,
+  toggleNoTransfers,
+} from "./store/checkboxesSlice";
+import { RootState } from "./store";
 
-interface CheckboxesState {
-  [key: string]: boolean;
-}
+// interface CheckboxesState {
+//   [key: string]: boolean;
+// }
 
 function Aviasales() {
   const [isPressed, setIsPressed] = useState(false);
-  const [checkboxes, setCheckboxes] = useState<CheckboxesState>({
-    all: true,
-    "0": false,
-    "1": false,
-    "2": false,
-    "3": false,
-  });
 
-  useEffect(() => {
-    setIsPressed(true);
-  }, []);
+  // const [checkboxes, setCheckboxes] = useState<CheckboxesState>({
+  //   all: true,
+  //   "0": false,
+  //   "1": false,
+  //   "2": false,
+  //   "3": false,
+  // });
 
-  const btnClass = classNames("btn", {
-    "btn-active": isPressed,
-  });
+  const dispatch = useDispatch();
 
-  const handleCheckboxToggle = (id: string) => {
-    setCheckboxes((prevCheckboxes) => ({
-      ...prevCheckboxes,
-      [id]: !prevCheckboxes[id],
-    }));
+  const checkboxAll = useSelector(
+    (state: RootState) => state.checkboxes.allTransfersChecked
+  );
+  const checkboxOne = useSelector(
+    (state: RootState) => state.checkboxes.oneTransferChecked
+  );
+  const checkboxTwo = useSelector(
+    (state: RootState) => state.checkboxes.twoTransfersChecked
+  );
+  const checkboxThree = useSelector(
+    (state: RootState) => state.checkboxes.threeTransfersChecked
+  );
+  const checkboxNo = useSelector(
+    (state: RootState) => state.checkboxes.noTransfersChecked
+  );
+
+  const handleToggleAll = () => {
+    dispatch(toggleAllTransfers());
+  };
+
+  const handleToggleOne = () => {
+    dispatch(toggleOneTransfer());
+  };
+
+  const handleToggleTwo = () => {
+    dispatch(toggleTwoTransfers());
+  };
+
+  const handleToggleThree = () => {
+    dispatch(toggleThreeTransfers());
+  };
+
+  const handleToggleNo = () => {
+    dispatch(toggleNoTransfers());
   };
 
   const handleCheapestPress = () => {
@@ -46,6 +79,21 @@ function Aviasales() {
     console.log("Show more pressed");
   };
 
+  useEffect(() => {
+    setIsPressed(true);
+  }, []);
+
+  const btnClass = classNames("btn", {
+    "btn-active": isPressed,
+  });
+
+  // const handleCheckboxToggle = (id: string) => {
+  //   setCheckboxes((prevCheckboxes) => ({
+  //     ...prevCheckboxes,
+  //     [id]: !prevCheckboxes[id],
+  //   }));
+  // };
+
   return (
     <>
       <header>
@@ -59,63 +107,60 @@ function Aviasales() {
           <nav className="transfers">
             <h2 className="header">КОЛИЧЕСТВО ПЕРЕСАДОК</h2>
             <ul className="options">
-              <li
-                className="option"
-                onClick={() => handleCheckboxToggle("all")}
-              >
+              <li className="option" onClick={handleToggleAll}>
                 <input
                   type="checkbox"
                   id="all"
                   className="checkbox"
-                  checked={checkboxes.all}
+                  checked={checkboxAll}
                   readOnly
                 />
                 <label htmlFor="all" onClick={(e) => e.stopPropagation()}>
                   Все
                 </label>
               </li>
-              <li className="option" onClick={() => handleCheckboxToggle("0")}>
+              <li className="option" onClick={handleToggleNo}>
                 <input
                   type="checkbox"
                   id="0"
                   className="checkbox"
-                  checked={checkboxes["0"]}
+                  checked={checkboxNo}
                   readOnly
                 />
                 <label htmlFor="0" onClick={(e) => e.stopPropagation()}>
                   Без пересадок
                 </label>
               </li>
-              <li className="option" onClick={() => handleCheckboxToggle("1")}>
+              <li className="option" onClick={handleToggleOne}>
                 <input
                   type="checkbox"
                   id="1"
                   className="checkbox"
-                  checked={checkboxes["1"]}
+                  checked={checkboxOne}
                   readOnly
                 />
                 <label htmlFor="1" onClick={(e) => e.stopPropagation()}>
                   1 пересадка
                 </label>
               </li>
-              <li className="option" onClick={() => handleCheckboxToggle("2")}>
+              <li className="option" onClick={handleToggleTwo}>
                 <input
                   type="checkbox"
                   id="2"
                   className="checkbox"
-                  checked={checkboxes["2"]}
+                  checked={checkboxTwo}
                   readOnly
                 />
                 <label htmlFor="2" onClick={(e) => e.stopPropagation()}>
                   2 пересадки
                 </label>
               </li>
-              <li className="option" onClick={() => handleCheckboxToggle("3")}>
+              <li className="option" onClick={handleToggleThree}>
                 <input
                   type="checkbox"
                   id="3"
                   className="checkbox"
-                  checked={checkboxes["3"]}
+                  checked={checkboxThree}
                   readOnly
                 />
                 <label htmlFor="3" onClick={(e) => e.stopPropagation()}>
