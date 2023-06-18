@@ -3,32 +3,21 @@ import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import {
   toggleAllTransfers,
+  toggleZeroTransfers,
   toggleOneTransfer,
   toggleTwoTransfers,
   toggleThreeTransfers,
-  toggleNoTransfers,
 } from "./store/checkboxesSlice";
 import { RootState } from "./store";
-
-// interface CheckboxesState {
-//   [key: string]: boolean;
-// }
 
 function Aviasales() {
   const [isPressed, setIsPressed] = useState(false);
 
-  // const [checkboxes, setCheckboxes] = useState<CheckboxesState>({
-  //   all: true,
-  //   "0": false,
-  //   "1": false,
-  //   "2": false,
-  //   "3": false,
-  // });
-
-  const dispatch = useDispatch();
-
   const checkboxAll = useSelector(
     (state: RootState) => state.checkboxes.allTransfersChecked
+  );
+  const checkboxZero = useSelector(
+    (state: RootState) => state.checkboxes.zeroTransfersChecked
   );
   const checkboxOne = useSelector(
     (state: RootState) => state.checkboxes.oneTransferChecked
@@ -39,28 +28,35 @@ function Aviasales() {
   const checkboxThree = useSelector(
     (state: RootState) => state.checkboxes.threeTransfersChecked
   );
-  const checkboxNo = useSelector(
-    (state: RootState) => state.checkboxes.noTransfersChecked
-  );
+
+  const dispatch = useDispatch();
 
   const handleToggleAll = () => {
     dispatch(toggleAllTransfers());
   };
 
+  const handleToggleZero = () => {
+    const allChecked =
+      !checkboxZero && checkboxOne && checkboxTwo && checkboxThree;
+    dispatch(toggleZeroTransfers({ all: allChecked }));
+  };
+
   const handleToggleOne = () => {
-    dispatch(toggleOneTransfer());
+    const allChecked =
+      checkboxZero && !checkboxOne && checkboxTwo && checkboxThree;
+    dispatch(toggleOneTransfer({ all: allChecked }));
   };
 
   const handleToggleTwo = () => {
-    dispatch(toggleTwoTransfers());
+    const allChecked =
+      checkboxZero && checkboxOne && !checkboxTwo && checkboxThree;
+    dispatch(toggleTwoTransfers({ all: allChecked }));
   };
 
   const handleToggleThree = () => {
-    dispatch(toggleThreeTransfers());
-  };
-
-  const handleToggleNo = () => {
-    dispatch(toggleNoTransfers());
+    const allChecked =
+      checkboxZero && checkboxOne && checkboxTwo && !checkboxThree;
+    dispatch(toggleThreeTransfers({ all: allChecked }));
   };
 
   const handleCheapestPress = () => {
@@ -119,12 +115,12 @@ function Aviasales() {
                   Все
                 </label>
               </li>
-              <li className="option" onClick={handleToggleNo}>
+              <li className="option" onClick={handleToggleZero}>
                 <input
                   type="checkbox"
                   id="0"
                   className="checkbox"
-                  checked={checkboxNo}
+                  checked={checkboxZero}
                   readOnly
                 />
                 <label htmlFor="0" onClick={(e) => e.stopPropagation()}>
