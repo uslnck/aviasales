@@ -2,33 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IFiltersSliceState } from "../types";
 
 const initialState: IFiltersSliceState = {
-  cheapestFilter: false,
-  fastestFilter: false,
-  optimalFilter: false,
+  selectedFilter: "cheapest",
 };
 
 const filtersSlice = createSlice({
   name: "filters",
   initialState,
   reducers: {
-    setCheapest: (state) => {
-      state.cheapestFilter = true;
-      state.fastestFilter = false;
-      state.optimalFilter = false;
-    },
-    setFastest: (state) => {
-      state.fastestFilter = true;
-      state.optimalFilter = false;
-      state.cheapestFilter = false;
-    },
-    setOptimal: (state) => {
-      state.optimalFilter = true;
-      state.cheapestFilter = false;
-      state.fastestFilter = false;
+    setFilter: (state, action) => {
+      state.selectedFilter = action.payload.filter;
     },
   },
 });
 
-export const { setCheapest, setFastest, setOptimal } = filtersSlice.actions;
+export const { setFilter } = filtersSlice.actions;
 
 export default filtersSlice.reducer;

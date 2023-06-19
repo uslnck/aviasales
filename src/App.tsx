@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
-import classNames from "classnames";
-
+import Filters from "./components/filters";
 import {
   toggleAllTransfers,
   toggleZeroTransfers,
@@ -9,7 +8,6 @@ import {
   toggleTwoTransfers,
   toggleThreeTransfers,
 } from "./store/checkboxesSlice";
-import { setCheapest, setFastest, setOptimal } from "./store/filtersSlice";
 
 function Aviasales() {
   const {
@@ -19,14 +17,6 @@ function Aviasales() {
     twoTransfersChecked: checkboxTwo,
     threeTransfersChecked: checkboxThree,
   } = useSelector((state: RootState) => state.checkboxes);
-
-  const { cheapestFilter, fastestFilter, optimalFilter } = useSelector(
-    (state: RootState) => state.filters
-  );
-
-  const btnClass = classNames("filter", {
-    active: cheapestFilter || fastestFilter || optimalFilter, ////////////
-  });
 
   const dispatch = useDispatch();
 
@@ -56,21 +46,6 @@ function Aviasales() {
     const isCheckAll =
       checkboxZero && checkboxOne && checkboxTwo && !checkboxThree;
     dispatch(toggleThreeTransfers({ all: isCheckAll }));
-  };
-
-  const handleCheapestPress = () => {
-    dispatch(setCheapest());
-    console.log("Cheapest pressed");
-  };
-
-  const handleFastestPress = () => {
-    dispatch(setFastest());
-    console.log("Fastest pressed");
-  };
-
-  const handleOptimalPress = () => {
-    dispatch(setOptimal());
-    console.log("Optimal pressed");
   };
 
   const handleShowMorePress = () => {
@@ -153,34 +128,7 @@ function Aviasales() {
             </ul>
           </div>
           <div className="tickets-container">
-            <div className="costs">
-              <ul className="filters">
-                <li>
-                  <button
-                    onClick={handleCheapestPress}
-                    className={`${btnClass}`}
-                  >
-                    САМЫЙ ДЕШЕВЫЙ
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={handleFastestPress}
-                    className={`${btnClass}`}
-                  >
-                    САМЫЙ БЫСТРЫЙ
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={handleOptimalPress}
-                    className={`${btnClass}`}
-                  >
-                    ОПТИМАЛЬНЫЙ
-                  </button>
-                </li>
-              </ul>
-            </div>
+            <Filters />
             <div className="ticket">
               <div className="price-company-container">
                 <span className="price">13 400 Р</span>
