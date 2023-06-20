@@ -89,101 +89,11 @@ main {
   .main-container {
     display: flex;
     gap: 20px;
-    // <Transfers/>
+    // <Transfers />
   }
-}
 
-.tickets-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 68.5%;
-  // <Filters/>
-  .ticket {
-    height: 184px;
-    background-color: white;
-    box-shadow: $box-shadow;
-    border-radius: $border-radius;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    .price-company-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      .price {
-        color: $primary-color;
-        font-weight: 600;
-        font-size: 24px;
-        line-height: 24px;
-      }
-    }
-    .route-container {
-      display: flex;
-      justify-content: space-between;
-      .route-hours {
-        display: flex;
-        flex-direction: column;
-        width: 33.33%;
-
-        .route {
-          color: $grayed-color;
-          font-weight: 600;
-          font-size: 12px;
-          line-height: 18px;
-        }
-        .hours {
-          font-weight: 600;
-          font-size: 14px;
-          line-height: 21px;
-        }
-      }
-      .flight-time {
-        display: flex;
-        flex-direction: column;
-        justify-self: flex-start;
-        width: 33.33%;
-        .flight {
-          color: $grayed-color;
-          font-weight: 600;
-          font-size: 12px;
-          line-height: 18px;
-        }
-        .time {
-          font-weight: 600;
-          font-size: 14px;
-          line-height: 21px;
-        }
-      }
-      .change-cities {
-        display: flex;
-        flex-direction: column;
-        justify-self: flex-start;
-        width: 33.33%;
-        .change {
-          color: $grayed-color;
-          font-weight: 600;
-          font-size: 12px;
-          line-height: 18px;
-        }
-        .cities {
-          font-weight: 600;
-          font-size: 14px;
-          line-height: 21px;
-        }
-      }
-    }
-  }
-  .more-tickets {
-    height: 50px;
-    background-color: $primary-color;
-    border-radius: $border-radius;
-    color: white;
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 20px;
-    letter-spacing: 0.5px;
-  }
+  // <TicketList />
+  //// <Filters />
+  //// <Ticket />
+  //// <ShowMoreButton />
 }

@@ -9,25 +9,13 @@ function Filters() {
   const { selectedFilter } = useSelector((state: RootState) => state.filters);
 
   const buttons = [
-    { id: 1, label: "САМЫЙ ДЕШЕВЫЙ", filter: "cheapest" },
-    { id: 2, label: "САМЫЙ БЫСТРЫЙ", filter: "fastest" },
-    { id: 3, label: "ОПТИМАЛЬНЫЙ", filter: "optimal" },
+    { id: 0, label: "САМЫЙ ДЕШЕВЫЙ", filter: "cheapest" },
+    { id: 1, label: "САМЫЙ БЫСТРЫЙ", filter: "fastest" },
+    { id: 2, label: "ОПТИМАЛЬНЫЙ", filter: "optimal" },
   ];
 
   const handleClick = (buttonId: number) => {
-    switch (buttonId) {
-      case 1:
-        dispatch(setFilter({ filter: "cheapest" }));
-        break;
-      case 2:
-        dispatch(setFilter({ filter: "fastest" }));
-        break;
-      case 3:
-        dispatch(setFilter({ filter: "optimal" }));
-        break;
-      default:
-        break;
-    }
+    dispatch(setFilter({ filter: buttons[buttonId].filter }));
   };
 
   return (

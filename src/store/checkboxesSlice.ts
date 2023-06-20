@@ -13,6 +13,25 @@ const checkboxesSlice = createSlice({
   name: "checkboxes",
   initialState,
   reducers: {
+    toggleTransfers: (state, action) => {
+      switch (action.payload.checked) {
+        case 1:
+          state.zeroTransfersChecked = !state.zeroTransfersChecked;
+          break;
+        case 2:
+          state.oneTransferChecked = !state.oneTransferChecked;
+          break;
+        case 3:
+          state.twoTransfersChecked = !state.twoTransfersChecked;
+          break;
+        case 4:
+          state.threeTransfersChecked = !state.threeTransfersChecked;
+          break;
+      }
+      const allChecked = action.payload.all;
+      if (allChecked) state.allTransfersChecked = true;
+      else state.allTransfersChecked = false;
+    },
     toggleAllTransfers: (state) => {
       const allTransfersStatus = !state.allTransfersChecked;
       state.allTransfersChecked = allTransfersStatus;
@@ -21,39 +40,9 @@ const checkboxesSlice = createSlice({
       state.twoTransfersChecked = allTransfersStatus;
       state.threeTransfersChecked = allTransfersStatus;
     },
-    toggleZeroTransfers: (state, action) => {
-      state.zeroTransfersChecked = !state.zeroTransfersChecked;
-      const allChecked = action.payload.all;
-      if (allChecked) state.allTransfersChecked = true;
-      else state.allTransfersChecked = false;
-    },
-    toggleOneTransfer: (state, action) => {
-      state.oneTransferChecked = !state.oneTransferChecked;
-      const allChecked = action.payload.all;
-      if (allChecked) state.allTransfersChecked = true;
-      else state.allTransfersChecked = false;
-    },
-    toggleTwoTransfers: (state, action) => {
-      state.twoTransfersChecked = !state.twoTransfersChecked;
-      const allChecked = action.payload.all;
-      if (allChecked) state.allTransfersChecked = true;
-      else state.allTransfersChecked = false;
-    },
-    toggleThreeTransfers: (state, action) => {
-      state.threeTransfersChecked = !state.threeTransfersChecked;
-      const allChecked = action.payload.all;
-      if (allChecked) state.allTransfersChecked = true;
-      else state.allTransfersChecked = false;
-    },
   },
 });
 
-export const {
-  toggleAllTransfers,
-  toggleZeroTransfers,
-  toggleOneTransfer,
-  toggleTwoTransfers,
-  toggleThreeTransfers,
-} = checkboxesSlice.actions;
+export const { toggleTransfers, toggleAllTransfers } = checkboxesSlice.actions;
 
 export default checkboxesSlice.reducer;
