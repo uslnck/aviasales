@@ -1,53 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store";
 import Filters from "./components/filters";
-import {
-  toggleAllTransfers,
-  toggleZeroTransfers,
-  toggleOneTransfer,
-  toggleTwoTransfers,
-  toggleThreeTransfers,
-} from "./store/checkboxesSlice";
+import Transfers from "./components/transfers";
 
 function Aviasales() {
-  const {
-    allTransfersChecked: checkboxAll,
-    zeroTransfersChecked: checkboxZero,
-    oneTransferChecked: checkboxOne,
-    twoTransfersChecked: checkboxTwo,
-    threeTransfersChecked: checkboxThree,
-  } = useSelector((state: RootState) => state.checkboxes);
-
-  const dispatch = useDispatch();
-
-  const handleToggleAll = () => {
-    dispatch(toggleAllTransfers());
-  };
-
-  const handleToggleZero = () => {
-    const isCheckAll =
-      !checkboxZero && checkboxOne && checkboxTwo && checkboxThree;
-    dispatch(toggleZeroTransfers({ all: isCheckAll }));
-  };
-
-  const handleToggleOne = () => {
-    const isCheckAll =
-      checkboxZero && !checkboxOne && checkboxTwo && checkboxThree;
-    dispatch(toggleOneTransfer({ all: isCheckAll }));
-  };
-
-  const handleToggleTwo = () => {
-    const isCheckAll =
-      checkboxZero && checkboxOne && !checkboxTwo && checkboxThree;
-    dispatch(toggleTwoTransfers({ all: isCheckAll }));
-  };
-
-  const handleToggleThree = () => {
-    const isCheckAll =
-      checkboxZero && checkboxOne && checkboxTwo && !checkboxThree;
-    dispatch(toggleThreeTransfers({ all: isCheckAll }));
-  };
-
   const handleShowMorePress = () => {
     console.log("Show more pressed");
   };
@@ -62,73 +16,11 @@ function Aviasales() {
       </header>
       <main>
         <div className="main-container">
-          <div className="transfers">
-            <h2 className="header">КОЛИЧЕСТВО ПЕРЕСАДОК</h2>
-            <ul className="options">
-              <li className="option" onClick={handleToggleAll}>
-                <input
-                  type="checkbox"
-                  id="all"
-                  className="checkbox"
-                  checked={checkboxAll}
-                  readOnly
-                />
-                <label htmlFor="all" onClick={(e) => e.stopPropagation()}>
-                  Все
-                </label>
-              </li>
-              <li className="option" onClick={handleToggleZero}>
-                <input
-                  type="checkbox"
-                  id="0"
-                  className="checkbox"
-                  checked={checkboxZero}
-                  readOnly
-                />
-                <label htmlFor="0" onClick={(e) => e.stopPropagation()}>
-                  Без пересадок
-                </label>
-              </li>
-              <li className="option" onClick={handleToggleOne}>
-                <input
-                  type="checkbox"
-                  id="1"
-                  className="checkbox"
-                  checked={checkboxOne}
-                  readOnly
-                />
-                <label htmlFor="1" onClick={(e) => e.stopPropagation()}>
-                  1 пересадка
-                </label>
-              </li>
-              <li className="option" onClick={handleToggleTwo}>
-                <input
-                  type="checkbox"
-                  id="2"
-                  className="checkbox"
-                  checked={checkboxTwo}
-                  readOnly
-                />
-                <label htmlFor="2" onClick={(e) => e.stopPropagation()}>
-                  2 пересадки
-                </label>
-              </li>
-              <li className="option" onClick={handleToggleThree}>
-                <input
-                  type="checkbox"
-                  id="3"
-                  className="checkbox"
-                  checked={checkboxThree}
-                  readOnly
-                />
-                <label htmlFor="3" onClick={(e) => e.stopPropagation()}>
-                  3 пересадки
-                </label>
-              </li>
-            </ul>
-          </div>
+          {/*вне компонентов только хедер, мейн, и их контейнеры. запихнуть фильтр и показать ещё как часть тикет листа, он будет из 3 компонентов состоятьЖ фильтра, фабрики тикетов, кнопки*/}
+          <Transfers />
           <div className="tickets-container">
             <Filters />
+            {/* start <TicketList />*/}
             <div className="ticket">
               <div className="price-company-container">
                 <span className="price">13 400 Р</span>
@@ -167,6 +59,7 @@ function Aviasales() {
               ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
             </button>
           </div>
+          {/*start <TicketList />*/}
         </div>
       </main>
     </>
