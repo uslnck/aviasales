@@ -21,7 +21,8 @@
       line-height: 24px;
     }
   }
-  .route-container {
+  .route-container-first,
+  .route-container-second {
     display: flex;
     justify-content: space-between;
     .route-hours {

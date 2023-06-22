@@ -1,8 +1,13 @@
 @import "../../main.scss";
 
-.tickets-container {
+.ticket-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 68.5%;
+  .ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 }

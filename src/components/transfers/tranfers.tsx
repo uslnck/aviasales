@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   toggleTransfers,
   toggleAllTransfers,
-} from "../../store/checkboxesSlice";
+} from "../../store/checkboxes-slice";
 import "./tranfers.scss";
 import { RootState } from "../../store";
 

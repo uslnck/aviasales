@@ -5,7 +5,8 @@ const initialState: ITicketsSliceState = {
   searchId: "",
   tickets: [],
   status: "",
-  error: null,
+  searchIdError: null,
+  ticketsError: null,
 };
 
 export const fetchSearchId = createAsyncThunk(
@@ -19,7 +20,8 @@ export const fetchSearchId = createAsyncThunk(
         throw new Error("Server error");
       }
       const body = await response.json();
-      return body;
+      console.log(body.searchId);
+      return body.searchId;
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -28,17 +30,18 @@ export const fetchSearchId = createAsyncThunk(
 
 export const fetchTickets = createAsyncThunk(
   "tickets/fetchTickets",
-  async function (_, { rejectWithValue }) {
+  async function (_, { getState, rejectWithValue }) {
+    const searchId = getState().tickets.searchId;
     try {
       const response = await fetch(
-        `https://aviasales-test-api.kata.academy/${initialState.searchId}`
+        `https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`
       );
       if (!response.ok) {
         throw new Error("Server error");
       }
       const body = await response.json();
-      console.log(body);
-      return body;
+      console.log(body.tickets);
+      return body.tickets;
     } catch (error) {
       return rejectWithValue((error as Error).message);
     }
@@ -54,19 +57,31 @@ const ticketsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchTickets.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(fetchTickets.fulfilled, (state, action) => {
-        state.status = "resolved";
-        state.searchId = action.payload;
-      })
-      .addCase(fetchTickets.rejected, (state, action) => {
-        state.status = "rejected";
-        state.error = action.payload;
-      });
+    const asyncFunctions = [
+      {
+        action: fetchSearchId,
+        payloadKey: "searchId",
+        errorKey: "searchIdError",
+      },
+      { action: fetchTickets, payloadKey: "tickets", errorKey: "ticketsError" },
+    ];
+
+    asyncFunctions.forEach(({ action, payloadKey, errorKey }) => {
+      builder
+        .addCase(action.pending, (state) => {
+          state.status = "loading";
+          state[errorKey] = null;
+        })
+        .addCase(action.fulfilled, (state, action) => {
+          state.status = "resolved";
+          state[payloadKey] = action.payload;
+          state[errorKey] = null;
+        })
+        .addCase(action.rejected, (state, action) => {
+          state.status = "rejected";
+          state[errorKey] = action.payload;
+        });
+    });
   },
 });
 

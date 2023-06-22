@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setFilter } from "../../store/filtersSlice";
+import { setFilter } from "../../store/filters-slice";
 import classNames from "classnames";
 import "./filters.scss";
 import { RootState } from "../../store";

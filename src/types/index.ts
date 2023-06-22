@@ -1,3 +1,4 @@
-export * from "./checkboxesSliceTypes";
-export * from "./filtersSliceTypes";
-export * from "./ticketsSliceTypes";
+export * from "./checkboxes-slice-types";
+export * from "./filters-slice-types";
+export * from "./tickets-slice-types";
+export * from "./ticket-list-types";
