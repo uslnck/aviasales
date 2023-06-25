@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
-
 import Filters from "../filters";
 import ShowMoreButton from "../show-more-button";
 import Ticket from "../ticket";

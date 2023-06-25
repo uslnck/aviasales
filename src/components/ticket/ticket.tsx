@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-nocheck
-
 import "./ticket.scss";
 import {
   formattedStartEnd,
@@ -47,12 +44,13 @@ function Ticket({ carrier, price, segments }) {
     }
   };
 
+  const logoUrl = `//pics.avs.io/99/36/${carrier}.png`;
+
   return (
     <div className="ticket">
       <div className="price-company-container">
         <span className="price">{separatedPrice(price)} Р</span>
-        {/* <span className="company">{carrier}</span> */}
-        <img className="company" src="s7-logo.svg"></img>
+        <img className="company" src={logoUrl}></img>
       </div>
       <div className="route-container-first">
         <div className="route-hours">
