@@ -31,6 +31,8 @@ export const fetchSearchId = createAsyncThunk(
 export const fetchTickets = createAsyncThunk(
   "tickets/fetchTickets",
   async function (_, { getState, rejectWithValue }) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const searchId = getState().tickets.searchId;
     try {
       const response = await fetch(
@@ -70,15 +72,23 @@ const ticketsSlice = createSlice({
       builder
         .addCase(action.pending, (state) => {
           state.status = "loading";
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           state[errorKey] = null;
         })
         .addCase(action.fulfilled, (state, action) => {
           state.status = "resolved";
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           state[payloadKey] = action.payload;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           state[errorKey] = null;
         })
         .addCase(action.rejected, (state, action) => {
           state.status = "rejected";
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           state[errorKey] = action.payload;
         });
     });

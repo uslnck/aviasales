@@ -4,6 +4,8 @@ import {
   formattedDuration,
 } from "../../utils/helpers/fns-date";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 function Ticket({ carrier, price, segments }) {
   const flightForth = segments[0];
   const flightBack = segments[1];

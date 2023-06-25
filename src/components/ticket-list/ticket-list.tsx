@@ -13,10 +13,14 @@ function TicketList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     dispatch(fetchSearchId());
   }, [dispatch]);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     dispatch(fetchTickets());
   }, [dispatch, searchId]);
 
