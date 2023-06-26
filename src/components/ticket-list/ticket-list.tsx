@@ -26,22 +26,20 @@ function TicketList() {
   }, [dispatch]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    dispatch(fetchTickets() as any);
+    if (searchId.length !== 0) {
+      for (let i = 0; i < 21; i++) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        dispatch(fetchTickets() as any);
+      }
+    }
   }, [dispatch, searchId]);
 
   useEffect(() => {
-    for (let i = 0; i < 19; i++) {
+    if (fetchTicketsStatus === "rejected") {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       dispatch(fetchTickets() as any);
     }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (fetchTicketsStatus === "rejected" && searchId !== undefined)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      dispatch(fetchTickets() as any);
-  }, [dispatch, fetchTicketsStatus, searchId]);
+  }, [dispatch, fetchTicketsStatus]);
 
   // const elements = tickets
   //   // .filter((ticket) => {
@@ -59,12 +57,7 @@ function TicketList() {
   //   });
 
   const loadingStatus = (): JSX.Element | undefined => {
-    if (tickets.length === 0)
-      return (
-        <ul className="ticket-list">
-          <Spin size="large" />
-        </ul>
-      );
+    if (tickets.length === 0) return <Spin size="large" />;
   };
 
   return (
