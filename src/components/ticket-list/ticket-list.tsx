@@ -7,6 +7,7 @@ import { fetchSearchId, fetchTickets } from "../../store/tickets-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Spin } from "antd";
+import { ITicket } from "../../types";
 
 function TicketList() {
   const searchId = useSelector((state: RootState) => state.tickets.searchId);
@@ -17,6 +18,19 @@ function TicketList() {
   const displayCount = useSelector(
     (state: RootState) => state.tickets.displayCount
   );
+  const zeroTranfers = useSelector(
+    (state: RootState) => state.checkboxes.zeroTransfersChecked
+  );
+  const oneTransfer = useSelector(
+    (state: RootState) => state.checkboxes.oneTransferChecked
+  );
+  const twoTransfers = useSelector(
+    (state: RootState) => state.checkboxes.twoTransfersChecked
+  );
+  const threeTransfers = useSelector(
+    (state: RootState) => state.checkboxes.threeTransfersChecked
+  );
+  const order = useSelector((state: RootState) => state.filters.selectedFilter);
 
   const dispatch = useDispatch();
 
@@ -41,23 +55,47 @@ function TicketList() {
     }
   }, [dispatch, fetchTicketsStatus]);
 
-  // const elements = tickets
-  //   // .filter((ticket) => {
-  //   //   if (filter === "") return ;
-  //   //   else if (filter === "") return ;
-  //   //   else if (filter === "") return ;
-  //   //   else throw new Error();
-  //   // })
-  //   .map((ticket, i) => {
-  //     return (
-  //       <li key={i}>
-  //         <Ticket props={{carrier, t}}/>
-  //       </li>
-  //     );
-  //   });
-
   const loadingStatus = (): JSX.Element | undefined => {
     if (tickets.length === 0) return <Spin size="large" />;
+  };
+
+  const filterTickets = (): ITicket[] => {
+    const mutableTickets = Array.from(tickets);
+
+    if (zeroTranfers || oneTransfer || twoTransfers || threeTransfers) {
+      const transferCount = zeroTranfers
+        ? 0
+        : oneTransfer
+        ? 1
+        : twoTransfers
+        ? 2
+        : 3;
+
+      return mutableTickets.filter(
+        (t) =>
+          t.segments[0].stops.length === transferCount ||
+          t.segments[1].stops.length === transferCount
+      );
+    }
+    return mutableTickets;
+  };
+
+  const organizeTickets = (filteredTickets: () => ITicket[]): ITicket[] => {
+    const ticketsToOrganize: ITicket[] = Array.from(filteredTickets());
+
+    switch (order) {
+      case "cheapest":
+        return ticketsToOrganize.sort((a, b) => a.price - b.price);
+      case "fastest":
+        return ticketsToOrganize.sort(
+          (a, b) =>
+            a.segments[0].duration +
+            a.segments[1].duration -
+            (b.segments[0].duration + b.segments[1].duration)
+        );
+      default:
+        return ticketsToOrganize;
+    }
   };
 
   return (
@@ -65,7 +103,7 @@ function TicketList() {
       <Filters />
       <ul className="ticket-list">
         {loadingStatus() ||
-          tickets
+          organizeTickets(filterTickets)
             .slice(0, displayCount)
             .map((ticket, i) => <Ticket key={i} {...ticket} />)}
       </ul>
