@@ -2,11 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { ITicketsSliceState } from "../types";
 
 const initialState: ITicketsSliceState = {
-  searchId: "",
+  searchId: [],
   tickets: [],
-  status: "",
   searchIdError: null,
   ticketsError: null,
+  displayCount: 5,
+  fetchTicketsStatus: "",
+  searchIdStatus: "",
 };
 
 export const fetchSearchId = createAsyncThunk(
@@ -20,9 +22,10 @@ export const fetchSearchId = createAsyncThunk(
         throw new Error("Server error");
       }
       const body = await response.json();
-      console.log(body.searchId);
+      console.log(body);
       return body.searchId;
     } catch (error) {
+      console.log("Couldn't fetch searchId");
       return rejectWithValue((error as Error).message);
     }
   }
@@ -31,9 +34,7 @@ export const fetchSearchId = createAsyncThunk(
 export const fetchTickets = createAsyncThunk(
   "tickets/fetchTickets",
   async function (_, { getState, rejectWithValue }) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const searchId = getState().tickets.searchId;
+    const searchId = (getState() as any).tickets.searchId[0];
     try {
       const response = await fetch(
         `https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`
@@ -42,7 +43,7 @@ export const fetchTickets = createAsyncThunk(
         throw new Error("Server error");
       }
       const body = await response.json();
-      console.log(body.tickets);
+      console.log(body);
       return body.tickets;
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -54,8 +55,8 @@ const ticketsSlice = createSlice({
   name: "tickets",
   initialState,
   reducers: {
-    getTickets: (state) => {
-      state.tickets = [];
+    increaseDisplayCount: (state) => {
+      state.displayCount = state.displayCount + 5;
     },
   },
   extraReducers: (builder) => {
@@ -64,36 +65,37 @@ const ticketsSlice = createSlice({
         action: fetchSearchId,
         payloadKey: "searchId",
         errorKey: "searchIdError",
+        statusKey: "searchIdStatus",
       },
-      { action: fetchTickets, payloadKey: "tickets", errorKey: "ticketsError" },
+      {
+        action: fetchTickets,
+        payloadKey: "tickets",
+        errorKey: "ticketsError",
+        statusKey: "fetchTicketsStatus",
+      },
     ];
 
-    asyncFunctions.forEach(({ action, payloadKey, errorKey }) => {
+    asyncFunctions.forEach(({ action, payloadKey, errorKey, statusKey }) => {
       builder
-        .addCase(action.pending, (state) => {
-          state.status = "loading";
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        .addCase(action.pending, (state: ITicketsSliceState) => {
+          state[statusKey] = "loading";
           state[errorKey] = null;
         })
-        .addCase(action.fulfilled, (state, action) => {
-          state.status = "resolved";
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          state[payloadKey] = action.payload;
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        .addCase(action.fulfilled, (state: ITicketsSliceState, action) => {
+          state[statusKey] = "resolved";
+          state[payloadKey] = (state[payloadKey] as any[]).concat(
+            action.payload
+          );
           state[errorKey] = null;
         })
-        .addCase(action.rejected, (state, action) => {
-          state.status = "rejected";
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        .addCase(action.rejected, (state: ITicketsSliceState, action) => {
+          console.log(action.payload);
+          state[statusKey] = "rejected";
           state[errorKey] = action.payload;
         });
     });
   },
 });
 
-export const { getTickets } = ticketsSlice.actions;
+export const { increaseDisplayCount } = ticketsSlice.actions;
 export default ticketsSlice.reducer;

@@ -6,23 +6,38 @@ import { useEffect } from "react";
 import { fetchSearchId, fetchTickets } from "../../store/tickets-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { Spin } from "antd";
 
 function TicketList() {
   const searchId = useSelector((state: RootState) => state.tickets.searchId);
   const tickets = useSelector((state: RootState) => state.tickets.tickets);
+  const fetchTicketsStatus = useSelector(
+    (state: RootState) => state.tickets.fetchTicketsStatus
+  );
+  const displayCount = useSelector(
+    (state: RootState) => state.tickets.displayCount
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    dispatch(fetchSearchId());
+    dispatch(fetchSearchId() as any);
   }, [dispatch]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    dispatch(fetchTickets());
+    dispatch(fetchTickets() as any);
   }, [dispatch, searchId]);
+
+  useEffect(() => {
+    for (let i = 0; i < 19; i++) {
+      dispatch(fetchSearchId() as any);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (fetchTicketsStatus === "rejected" && searchId !== undefined)
+      dispatch(fetchTickets() as any);
+  }, [dispatch, fetchTicketsStatus, searchId]);
 
   // const elements = tickets
   //   // .filter((ticket) => {
@@ -39,29 +54,18 @@ function TicketList() {
   //     );
   //   });
 
-  // let startIndex = 0;
-  // const mapElements = (): any => {
-  //   const elements = tickets.slice(startIndex, startIndex + 5);
-  //   startIndex += 5;
-  //   elements.forEach((ticket) => {
-  //     return (
-  //       <Ticket
-  //         // key={i}
-  //         {...ticket}
-  //         props={[ticket.carrier, ticket.price, ticket.segments]}
-  //       />
-  //     );
-  //   });
-  // };
+  const loadingStatus = (): JSX.Element | undefined => {
+    if (tickets.length === 0) return <Spin size="large" />;
+  };
 
   return (
     <div className="ticket-container">
       <Filters />
       <ul className="ticket-list">
-        {/* {mapElements()} */}
-        {tickets.map((ticket, i) => (
-          <Ticket key={i} {...ticket} />
-        ))}
+        {loadingStatus() ||
+          tickets
+            .slice(0, displayCount)
+            .map((ticket, i) => <Ticket key={i} {...ticket} />)}
       </ul>
       <ShowMoreButton />
     </div>

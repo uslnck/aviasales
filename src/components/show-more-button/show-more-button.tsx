@@ -1,12 +1,16 @@
+import { useDispatch } from "react-redux";
+import { increaseDisplayCount } from "../../store/tickets-slice";
 import "./show-more-button.scss";
 
 function ShowMoreButton() {
-  const handleClick = () => {
-    console.log("clicked");
+  const dispatch = useDispatch();
+
+  const handleLoadMore = (): void => {
+    dispatch(increaseDisplayCount());
   };
 
   return (
-    <button className="more-tickets" onClick={handleClick}>
+    <button className="more-tickets" onClick={() => handleLoadMore()}>
       ПОКАЗАТЬ ЕЩЕ 5 БИЛЕТОВ!
     </button>
   );
