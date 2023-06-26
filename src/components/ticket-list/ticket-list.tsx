@@ -10,27 +10,20 @@ import { Spin } from "antd";
 import { ITicket } from "../../types";
 
 function TicketList() {
-  const searchId = useSelector((state: RootState) => state.tickets.searchId);
-  const tickets = useSelector((state: RootState) => state.tickets.tickets);
-  const fetchTicketsStatus = useSelector(
-    (state: RootState) => state.tickets.fetchTicketsStatus
+  const { searchId, tickets, fetchTicketsStatus, displayCount } = useSelector(
+    (state: RootState) => state.tickets
   );
-  const displayCount = useSelector(
-    (state: RootState) => state.tickets.displayCount
+
+  const {
+    allTransfersChecked: zeroTransfers,
+    oneTransferChecked: oneTransfer,
+    twoTransfersChecked: twoTransfers,
+    threeTransfersChecked: threeTransfers,
+  } = useSelector((state: RootState) => state.checkboxes);
+
+  const { selectedFilter: order } = useSelector(
+    (state: RootState) => state.filters
   );
-  const zeroTranfers = useSelector(
-    (state: RootState) => state.checkboxes.zeroTransfersChecked
-  );
-  const oneTransfer = useSelector(
-    (state: RootState) => state.checkboxes.oneTransferChecked
-  );
-  const twoTransfers = useSelector(
-    (state: RootState) => state.checkboxes.twoTransfersChecked
-  );
-  const threeTransfers = useSelector(
-    (state: RootState) => state.checkboxes.threeTransfersChecked
-  );
-  const order = useSelector((state: RootState) => state.filters.selectedFilter);
 
   const dispatch = useDispatch();
 
@@ -62,8 +55,8 @@ function TicketList() {
   const filterTickets = (): ITicket[] => {
     const mutableTickets = Array.from(tickets);
 
-    if (zeroTranfers || oneTransfer || twoTransfers || threeTransfers) {
-      const transferCount = zeroTranfers
+    if (zeroTransfers || oneTransfer || twoTransfers || threeTransfers) {
+      const transferCount = zeroTransfers
         ? 0
         : oneTransfer
         ? 1
