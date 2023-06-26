@@ -21,21 +21,25 @@ function TicketList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dispatch(fetchSearchId() as any);
   }, [dispatch]);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dispatch(fetchTickets() as any);
   }, [dispatch, searchId]);
 
   useEffect(() => {
     for (let i = 0; i < 19; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       dispatch(fetchSearchId() as any);
     }
   }, [dispatch]);
 
   useEffect(() => {
     if (fetchTicketsStatus === "rejected" && searchId !== undefined)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       dispatch(fetchTickets() as any);
   }, [dispatch, fetchTicketsStatus, searchId]);
 

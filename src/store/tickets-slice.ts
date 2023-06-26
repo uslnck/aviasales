@@ -34,6 +34,7 @@ export const fetchSearchId = createAsyncThunk(
 export const fetchTickets = createAsyncThunk(
   "tickets/fetchTickets",
   async function (_, { getState, rejectWithValue }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const searchId = (getState() as any).tickets.searchId[0];
     try {
       const response = await fetch(
@@ -83,6 +84,7 @@ const ticketsSlice = createSlice({
         })
         .addCase(action.fulfilled, (state: ITicketsSliceState, action) => {
           state[statusKey] = "resolved";
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           state[payloadKey] = (state[payloadKey] as any[]).concat(
             action.payload
           );

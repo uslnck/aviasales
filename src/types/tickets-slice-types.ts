@@ -8,5 +8,6 @@ export interface ITicketsSliceState {
   displayCount: number;
   fetchTicketsStatus: string;
   searchIdStatus: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
