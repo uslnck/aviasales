@@ -80,7 +80,7 @@ function TicketList() {
     return mutableTickets;
   };
 
-  const organizeTickets = (filteredTickets: () => ITicket[]) => {
+  const organizeTickets = (filteredTickets: () => ITicket[]): ITicket[] => {
     const ticketsToOrganize = Array.from(filteredTickets());
 
     switch (order) {
