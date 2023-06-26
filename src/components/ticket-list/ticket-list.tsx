@@ -15,7 +15,8 @@ function TicketList() {
   );
 
   const {
-    allTransfersChecked: zeroTransfers,
+    allTransfersChecked: allTransfers,
+    zeroTransfersChecked: zeroTransfers,
     oneTransferChecked: oneTransfer,
     twoTransfersChecked: twoTransfers,
     threeTransfersChecked: threeTransfers,
@@ -54,7 +55,9 @@ function TicketList() {
 
   const filterTickets = (): ITicket[] => {
     const mutableTickets = Array.from(tickets);
-
+    if (allTransfers) {
+      return mutableTickets;
+    }
     if (zeroTransfers || oneTransfer || twoTransfers || threeTransfers) {
       const transferCount = zeroTransfers
         ? 0
