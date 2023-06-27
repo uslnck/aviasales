@@ -58,6 +58,7 @@ function TicketList() {
     if (allTransfers) {
       return mutableTickets;
     }
+
     if (zeroTransfers || oneTransfer || twoTransfers || threeTransfers) {
       const transferCount = zeroTransfers
         ? 0
@@ -94,11 +95,17 @@ function TicketList() {
     }
   };
 
+  const noTicketsFound = (): JSX.Element | undefined => {
+    if (!zeroTransfers && !oneTransfer && !twoTransfers && !threeTransfers)
+      return <div className="not-found">ПОДХОДЯЩИХ РЕЙСОВ НЕ НАЙДЕНО</div>;
+  };
+
   return (
     <div className="ticket-container">
       <Filters />
       <ul className="ticket-list">
         {loadingStatus() ||
+          noTicketsFound() ||
           organizeTickets(filterTickets)
             .slice(0, displayCount)
             .map((ticket, i) => <Ticket key={i} {...ticket} />)}
