@@ -4,6 +4,7 @@ import {
   formattedDuration,
 } from "../../utils/helpers/fns-date";
 import { ITicketProps } from "../../types";
+import { separatedPrice, separatedStops, suffixedStops } from "./utils";
 
 const Ticket = ({ carrier, price, flightForth, flightBack }: ITicketProps) => {
   const {
@@ -21,26 +22,6 @@ const Ticket = ({ carrier, price, flightForth, flightBack }: ITicketProps) => {
     date: dateBack,
     duration: durationBack,
   } = flightBack;
-
-  const separatedPrice = (price: number) =>
-    price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-
-  const separatedStops = (stops: string[]) => stops.join(", ");
-
-  const suffixedStops = (stopsCount: number) => {
-    switch (stopsCount) {
-      case 0:
-        return "БЕЗ ПЕРЕСАДОК";
-      case 1:
-        return `${stopsCount} ПЕРЕСАДКА`;
-      case 2:
-      case 3:
-      case 4:
-        return `${stopsCount} ПЕРЕСАДКИ`;
-      default:
-        return `${stopsCount} ПЕРЕСАДОК`;
-    }
-  };
 
   const logoUrl = `//pics.avs.io/99/36/${carrier}.png`;
 

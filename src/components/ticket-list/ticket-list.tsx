@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Spin } from "antd";
 import { filterTickets, organizeTickets } from "../../store/tickets-slice";
+// import { filterTickets, organizeTickets } from "@store/actions";
 
 function TicketList() {
   const {
@@ -72,7 +73,6 @@ function TicketList() {
     twoTransfersChecked,
     threeTransfersChecked,
     selectedFilter,
-    fetchTicketsStatus,
   ]);
 
   return (
