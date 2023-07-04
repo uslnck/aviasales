@@ -3,17 +3,13 @@ import {
   formattedStartEnd,
   formattedDuration,
 } from "../../utils/helpers/fns-date";
+import { ITicketProps } from "../../types";
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-function Ticket({ carrier, price, segments }) {
-  const flightForth = segments[0];
-  const flightBack = segments[1];
-
+const Ticket = ({ carrier, price, flightForth, flightBack }: ITicketProps) => {
   const {
     origin: originForth,
     destination: destinationForth,
-    stops: [...stopsForth],
+    stops: stopsForth,
     date: dateForth,
     duration: durationForth,
   } = flightForth;
@@ -21,7 +17,7 @@ function Ticket({ carrier, price, segments }) {
   const {
     origin: originBack,
     destination: destinationBack,
-    stops: [...stopsBack],
+    stops: stopsBack,
     date: dateBack,
     duration: durationBack,
   } = flightBack;
@@ -29,7 +25,7 @@ function Ticket({ carrier, price, segments }) {
   const separatedPrice = (price: number) =>
     price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
-  const separatedStops = (...stops: string[]) => stops.join(", ");
+  const separatedStops = (stops: string[]) => stops.join(", ");
 
   const suffixedStops = (stopsCount: number) => {
     switch (stopsCount) {
@@ -69,7 +65,7 @@ function Ticket({ carrier, price, segments }) {
         </div>
         <div className="change-cities">
           <span className="change">{suffixedStops(stopsForth.length)}</span>
-          <span className="cities">{separatedStops(...stopsForth)}</span>
+          <span className="cities">{separatedStops(stopsForth)}</span>
         </div>
       </div>
       <div className="route-container-second">
@@ -87,11 +83,11 @@ function Ticket({ carrier, price, segments }) {
         </div>
         <div className="change-cities">
           <span className="change">{suffixedStops(stopsBack.length)}</span>
-          <span className="cities">{separatedStops(...stopsBack)}</span>
+          <span className="cities">{separatedStops(stopsBack)}</span>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Ticket;
